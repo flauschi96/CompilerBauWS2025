@@ -151,7 +151,7 @@ Besserer regex
 
 Aufgabe 1.5 Der Zweitletze Buchstabe
                        /  1 eingeben q2 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 \ muss eine 1 sein 
-q0-> 123 eingeben q1  -   2 eingeben q2 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 - muss eine 2 sein  q5 ->wort valide
+q0-> 123 eingeben q1  -   2 eingeben q2 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 - muss eine 2 sein  q5 ->-> 123 eingeben q6  =wort valide
                       \   3 eingbenn q3 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 / muss eine 3 sein  
 
 Aufgabe 1.6 Sprachen einer regulären Grammatik
