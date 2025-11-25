@@ -1,0 +1,166 @@
+Aufgabe 1.1 Sprachen von regulären Ausdrucken
+a+a(a+b)^* a
+a+a heißt a oder a 
+(a+b)^* heißt es kann beliebig oft a+b geben auch 0 mal
+und das a am ende heißt es endet definitiv mit einem a 
+Beispiele:
+a
+aba
+abaa
+aa
+abababababababa
+
+Aufgabe 1.2 Bezeichner in Programmiersprachen
+[A-Za-z]^+[A-Za-z0-9_]^*[A-Za-z0-9]^+
+a-zundA-Z Inkludieren Vv und Pp damit sind diese geprüft
+durch 2 mal ^+ sind es mindestens 2 einträge und nur in der mitte können_ gesetzt werden und am anfang nur Buchstaben
+Beispiel 1:
+Vcounter1 (globale variable beginnt mit V) 
+V passt zu [A-za-z]^+
+rest: counter1 passt zu +[A-Za-z0-9_]^*[A-Za-z0-9]^+ endet auf einer ziffer-> match
+
+Beispiel2:
+pValue(funktions/methodenparameter ->beginnt mit p)
+p passt zu [A-Za-z]^+
+rest: Value passt zu +[A-Za-z0-9_]^*[A-Za-z0-9]^+ endet auf e -> match
+
+
+DFA
+ (start)
+  q0 --letter--> q1 --letter/digit--> q2 [accept]
+                 |                 ^  |
+                 |_underscore_____/   | 
+                                   underscore  q2 --underscore--> q3 (non-accept) --letter/digit--> q2
+
+ any-invalid --> qdead (sink)
+q0 --V--> q1 (ein Buchstabe gelesen)
+q1 --c--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --o--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --u--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --n--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --t--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --e--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --r--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --1--> q2 (Ende; q2 ist akzeptierend weil endet nicht mit _ ) → akzeptiert
+
+q0 --p--> q1 (ein Buchstabe gelesen)
+q1 --V--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --a--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --l--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --u--> q2 (jetzt ≥2, endet nicht´mit _)
+q2 --e--> q2 (Ende; q2 ist akzeptierend weil es nicht mit _ endet) → akzeptiert
+
+q0 --D--> q1( ein Buchstabe gelesen)
+q1--_-->  q2( Ende jetzt <2, endet aber mit _ also nicht Akzeptierend) - Korrekt Abgelehnt
+
+L steht repräsentativ für jeden Buchstaben aus A–Z oder a–z 
+D steht für jede Ziffer 0–9.
+_ ist der Unterstrich.
+x heißt das mindestens ein weiteres zeichen kommt
+E -> ende
+
+S-> L x
+x-> L x (kann ein weiterer buchstabe angehängt werden)
+x-> D x (es kann eine weitere zahl angehängt werden)
+x-> _ x (es kann einen unterstrich geben sollange noch etwas danach kommt)
+x-> L E (es kann mit einem buchstaben enden)
+x-> D E ( es Endet mit einer zahl)
+
+S
+=> L X                (L = 'V')
+=> L L X              (L = 'c')
+=> L L L X            (L = 'o')
+=> L L L L X          (L = 'u')
+=> L L L L L X        (L = 'n')
+=> L L L L L L X      (L = 't')
+=> L L L L L L L X    (L = 'e')
+=> L L L L L L L L X  (L = 'r')
+=> L L L L L L L L D  (letzte Produktion X -> D where D = '1')
+=> "Vcounter1"
+
+S
+=> L X         (L = 'p')
+=> L L X       (L = 'V')
+=> L L L X     (L = 'a')
+=> L L L L X   (L = 'l')
+=> L L L L L X (L = 'u')
+=> L L L L L L (X -> L, L = 'e')
+=> "pValue"
+
+S
+/   \
+L     X
+'V'   / \
+     L   X
+    'c' / \
+        L  X
+       'o' / \
+           L  X
+          'u' / \
+              L  X
+             'n' / \
+                 L  X
+                't' / \
+                    L  X
+                   'e' / \
+                       L  X
+                      'r'  D
+                           '1'
+
+
+
+
+    S
+  /   \
+L     X
+'p'   / \
+     L   X
+    'V' / \
+        L  X
+       'a' / \
+           L  X
+          'l' / \
+              L  X
+             'u'  L
+                  'e'
+Aufgabe 1.3 Gleitkommazahlen in Porgrammiersprachen
+Python: float(64bit),Doppelte genauigkeit (15stellen) 
+Decimal type -> beliebige genauigkeit (keine grenze)
+-decimal notation z.b. 123.456
+-wissenschaftliche Notationen z.b. 1.23e4
+
+Java: float(32bit) einfache genauigkeit(7stellen)
+      double(64bit) doppelte genauigkeit(15 stellen)
+-decimal notation z.b. 123.456
+-wissenschaftliche Notationen z.b. 1.23e4
+(+,-)(0-9)^+ . (0-9)^+ (e/E)+ (0-9)^+
+
+                                                        / ----------------------------------------------------------------------------------------------------\
+q0 Start-> q1(+,-)->q2(0-9 unendlich oft wiederholbar)  -q3 .(PUNKT) ->q4 (0-9 unendlich oft wiederholdbar)- q5 (e,E) -q6 (0-9 unendlich oft wiederholbar) -> ENDE
+
+Aufgabe 1.4 Mailadressen?
+(a-z)^+ ist nur mindestens ein zeichen das ist vermutlich kein problem aber unüblich  aber es fehlen zahlen Großbuchstaben sowie sonerzeichen z.b. Dennis.woermann96@... wäre nicht möglich
+@ ist fix das passt
+das (a-z) vor dem Punkt hat auch keine erlaubten sonderzeichen /ein punkt würde direkt in den 2 regex springen und zahlen sind auch nicht erlaubt
+. passt
+das (a-z) nach dem Punkt hat die gleichen Probleme mit Sonderzeichen und Großbuchstaben
+
+Besserer regex
+[A-Za-z0-9.%+-]+@[A-Za-z0-9.-]+.[A-Za-z]
+(a-z+A-Z+0-9+.+%+++-)^+ @ (a-z+A-Z+0-9+.+%+++-)^+ .(a-z+A-Z+0-9+.+%+++-)^+
+
+Aufgabe 1.5 Der Zweitletze Buchstabe
+                       /  1 eingeben q2 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 \ muss eine 1 sein 
+q0-> 123 eingeben q1  -   2 eingeben q2 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 - muss eine 2 sein  q5 -> 123 eingeben q6  =wort valide
+                      \   3 eingbenn q3 - 1 2 oder 3 eingeben q3(kann man unendlich oft wiederholen) -1 2 oder 3 eingeben q4 / muss eine 3 sein  
+
+Aufgabe 1.6 Sprachen einer regulären Grammatik
+S -> aA
+A-> dB | bA |cA
+B->ac| bC |cA
+C-> E
+aA->(könnte werden zu) adB und damit zu ->adac ENDE
+aA-> (Könnte auch) abA-> abcA-> abcdB->abcdac
+
+Es fängt immer mit a an und kann am ende mit ac oder bC (weil C beendet) dazwischen kann es unendlich loopen 
+R = a (b + c)^* d (c (b + c)^* d)^* (a + b)
